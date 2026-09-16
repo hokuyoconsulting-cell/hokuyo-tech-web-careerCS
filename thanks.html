@@ -43,10 +43,18 @@
   <div class="box">
     <div class="icon">✅</div>
     <p class="title">送信が完了しました</p>
-    <p class="message">
+    <p class="message" id="thanks-message">
       分析結果はLINEにてお送りします。<br>
       しばらくお待ちください。
     </p>
-  </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const via = params.get('via'); // 'mail' が付いていればメール経由
+      if (via === 'mail') {
+        document.getElementById('thanks-message').innerHTML =
+          '分析結果はメールにてお送りします。<br>しばらくお待ちください。';
+      }
+    </script>  </div>
 </body>
 </html>
