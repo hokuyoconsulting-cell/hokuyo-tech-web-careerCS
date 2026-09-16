@@ -468,7 +468,11 @@
     <div class="q" data-qid="consent">
       <label class="choice" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;">
         <input type="checkbox" id="ppConsent" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;">
-        <span>プライバシーポリシーおよび利用規約に同意します。<br>☐ お知らせメールを受け取る</span>
+        <span>プライバシーポリシーおよび利用規約に同意します。</span>
+      </label>
+      <label class="choice" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;">
+        <input type="checkbox" id="newsConsent" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;">
+        <span>お知らせメールを受け取る（任意）</span>
       </label>
     </div>
 
@@ -512,6 +516,7 @@ document.querySelectorAll('.rank-row select').forEach(sel => {
 
   document.getElementById('userName').addEventListener('input', updateProgress);
   document.getElementById('userEmail').addEventListener('input', updateProgress);
+  document.getElementById('ppConsent').addEventListener('change', updateProgress);
 
   // コピー機能
   const gptTemplate = document.getElementById('gptTemplate');
@@ -589,7 +594,8 @@ document.querySelectorAll('.rank-row select').forEach(sel => {
       (['q10_r1','q10_r2','q10_r3','q10_r4'].some(n => form[n].value !== '') && !isQ10Valid())
         ? 'block' : 'none';
 
-    submitBtn.disabled = (answered < 11) || !isJsonValid() || !isProfileValid();
+    const ppConsentEl = document.getElementById('ppConsent');
+    submitBtn.disabled = (answered < 11) || !isJsonValid() || !isProfileValid() || !ppConsentEl.checked;
   }
 
   form.addEventListener('change', updateProgress);
@@ -633,7 +639,8 @@ document.querySelectorAll('.rank-row select').forEach(sel => {
       user_email: document.getElementById('userEmail').value.trim(),
       submitted_at: new Date().toISOString(),
       answers: answers,
-      chatgpt_json: chatgptData
+      chatgpt_json: chatgptData,
+      news_consent: document.getElementById('newsConsent').checked
     };
 
     submitBtn.disabled = true;
