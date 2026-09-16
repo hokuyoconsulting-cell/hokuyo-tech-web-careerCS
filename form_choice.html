@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>診断フォーム（テスト版）</title>
+<title>思い込みをほどく診断 | 北陽テック</title>
 <style>
   :root {
     --bg: #F3F2EE;
@@ -254,7 +254,7 @@
 <body>
 
 <header>
-  <div class="eyebrow">TEST VERSION</div>
+  <div class="eyebrow">Choice Diagnosis</div>
   <h1>あなたの判断パターン診断</h1>
   <p>3つの出来事について、11の質問に答えてください。フリー入力はありません。</p>
 </header>
@@ -465,6 +465,13 @@
       <div class="error-msg" id="json-error">JSONの形式が正しくありません。ChatGPTの出力をそのまま（説明文などを含めずに）貼り付けてください。</div>
     </div>
 
+    <div class="q" data-qid="consent">
+      <label class="choice" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;">
+        <input type="checkbox" id="ppConsent" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;">
+        <span>プライバシーポリシーおよび利用規約に同意します。<br>☐ お知らせメールを受け取る</span>
+      </label>
+    </div>
+
     <div class="submit-area">
       <button type="submit" id="submitBtn" disabled>回答を送信する</button>
       <div class="error-msg" id="submit-error">すべての質問に答え、JSONを貼り付けてください。</div>
@@ -639,11 +646,7 @@ document.querySelectorAll('.rank-row select').forEach(sel => {
         body: JSON.stringify(payload)
       });
 
-      form.style.display = 'none';
-      document.querySelector('.progress').style.display = 'none';
-      document.getElementById('resultScreen').style.display = 'block';
-      document.getElementById('debugBox').textContent =
-        '【テスト用・送信内容の確認】\n' + JSON.stringify(payload, null, 2);
+       window.location.href = 'thanks.html';
 
     } catch (err) {
       submitBtn.disabled = false;
