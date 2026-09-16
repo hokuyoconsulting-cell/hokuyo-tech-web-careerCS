@@ -86,7 +86,8 @@
     <div class="cta-price"><span class="cta-price-amount">¥3,300</span><span class="cta-price-unit">（税込）</span></div>
     <p class="cta-price-note">デジタルコンテンツの性質上、決済完了後の返金は原則不可です</p>
     <a href="https://buy.stripe.com/6oU7sE9Nn23Pfa98tbd3i02" class="btn-primary">残りの項目を解除して読む（¥3,300）</a>
-    <p class="disclaimer">決済にはStripeを使用しています。<br><a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web/tokushoho.html">特定商取引法に基づく表記</a>　/　<a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web/privacy.html">プライバシーポリシー</a>　/　<a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web/terms.html">利用規約</a></p>
+    <a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web-careerCS/form_v2.html?mode=edit" class="btn-secondary">回答を修正してから決済する</a>
+    <p class="disclaimer">決済にはStripeを使用しています。<br><a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web-careerCS/tokushoho.html">特定商取引法に基づく表記</a>　/　<a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web-careerCS/privacy.html">プライバシーポリシー</a>　/　<a href="https://hokuyoconsulting-cell.github.io/hokuyo-tech-web-careerCS/terms.html">利用規約</a></p>
   </div>
 </div>
 
@@ -97,6 +98,14 @@
   const payUrl = uid ? baseUrl + '?client_reference_id=' + uid : baseUrl;
 
   document.querySelectorAll('a[href="' + baseUrl + '"]').forEach(function(el) { el.href = payUrl; });
+
+  // btn-secondaryにもuidを付与
+  const editUrl = 'https://hokuyoconsulting-cell.github.io/hokuyo-tech-web-careerCS/form_v2.html?mode=edit';
+  const editUrlWithUid = uid ? editUrl + '&uid=' + uid : editUrl;
+  document.querySelectorAll('a[href="' + editUrl + '"]').forEach(function(el) {
+    el.href = editUrlWithUid;
+  });
+
 
   const LOCK_SVG = '<svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="#9199b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
   const CHECK_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -177,7 +186,7 @@
   }
 
   if (uid) {
-    const apiUrl = 'https://api.github.com/repos/hokuyoconsulting-cell/hokuyo-tech-web/contents/results/' + uid + '.json';
+    const apiUrl = 'https://api.github.com/repos/hokuyoconsulting-cell/hokuyo-tech-web-careerCS/contents/results/' + uid + '.json';
     fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github+json' } })
       .then(function(res) { return res.json(); })
       .then(function(data) {
