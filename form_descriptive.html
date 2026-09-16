@@ -619,7 +619,7 @@
       </label>
       <textarea id="q4" name="q4" class="tall" placeholder="例：繁忙期に一人でプロジェクトを抱えて毎晩残業が続いた時、誰にも言えず限界を感じた。それでも翌朝は笑顔で出社するために、帰り道に近所の公園で10分だけ座って気持ちを整理するようにしていた。"></textarea>
       <div class="char-count" id="q4-count">0文字</div>
-      <div class="error-message" id="q3-error">もう少し詳しく教えてください（50文字以上）</div>
+      <div class="error-message" id="q4-error">もう少し詳しく教えてください（50文字以上）</div>
     </div>
 
     <!-- Q5 -->
@@ -738,6 +738,15 @@
         入力した情報は分析のために使用し、第三者への販売は行いません。
       </span>
     </label>
+
+    <label class="consent-area" for="news-consent" style="margin-top:0.75rem;">
+      <input type="checkbox" id="news-consent" name="news-consent" />
+      <span class="consent-text">
+        お知らせメールを受け取る
+        <span style="color:var(--text-muted);">（任意）</span>
+      </span>
+    </label>
+
 
     <div class="submit-area">
       <button type="button" class="submit-btn" id="submit-btn" onclick="handleSubmit()">
@@ -942,12 +951,12 @@ function handleSubmit() {
     const uid = params.get('uid') || '';
 
     if (params.get('mode') === 'edit' && uid) {
-      const stripeUrl = 'https://buy.stripe.com/test_8x25kD7PMfpJ3oP4G224000?client_reference_id=' + uid;
+const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_reference_id=' + uid;
       window.location.href = stripeUrl;
       return;
     }
 
-    const payload = { uid: uid };
+    const payload = { uid: uid, news_consent: document.getElementById('news-consent').checked };
     FIELDS.forEach(f => {
       const el = document.getElementById(f.id);
       if (el) payload[f.id] = el.value.replace(/\r\n/g, '\\n').replace(/\r/g, '\\n').replace(/\n/g, '\\n');
