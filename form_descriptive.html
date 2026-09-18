@@ -522,6 +522,15 @@
       <p class="form-hint">本名でなくても大丈夫です。</p>
       <input type="text" id="user_name" name="user_name" placeholder="例：山田・やまちゃん・Yuki" />
     </div>
+
+    <div class="form-group">
+      <label class="form-label" for="user_email">
+        メールアドレス
+      </label>
+      <p class="form-hint">診断結果のご案内や、今後のご連絡に使用します。</p>
+      <input type="email" id="user_email" name="user_email" placeholder="example@example.com" required />
+      <div class="error-message" id="user_email-error">正しいメールアドレスを入力してください。</div>
+    </div>
   </div>
 
 
@@ -701,23 +710,6 @@
     </div>
   </div>
 
-  <!-- ③ 履歴書アップロード -->
-  <div class="section">
-    <div class="section-header">
-      <p class="section-label">Section 03</p>
-      <p class="section-title">履歴書・職務経歴書 <span style="font-size:13px; font-weight:300; color:var(--text-muted);">（任意）</span></p>
-      <p class="section-note">添付すると分析の精度が上がります。提出しなくても分析は実行されます。<br>PDF・Word形式対応。面談終了後に削除します。</p>
-    </div>
-
-    <div class="file-upload-area" id="upload-area">
-      <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" />
-      <div class="file-upload-icon">📄</div>
-      <p class="file-upload-text">クリックしてファイルを選択</p>
-      <p class="file-upload-sub">PDF / Word（.doc, .docx）</p>
-      <p class="file-selected" id="file-selected-msg"></p>
-    </div>
-  </div>
-
   <!-- ④ PP同意・送信 -->
   <div class="section">
     <div class="section-header">
@@ -838,6 +830,11 @@
   }
 
   // ─── バリデーション ────────────────────────────
+  function isEmailValid() {
+    const email = document.getElementById('user_email').value.trim();
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   function validate() {
     let hasError = false;
     FIELDS.forEach(f => {
@@ -855,9 +852,17 @@
         if (errEl) errEl.classList.remove('visible');
       }
     });
+    const emailErrEl = document.getElementById('user_email-error');
+    if (!isEmailValid()) {
+      document.getElementById('user_email').classList.add('error');
+      if (emailErrEl) emailErrEl.classList.add('visible');
+      hasError = true;
+    } else {
+      document.getElementById('user_email').classList.remove('error');
+      if (emailErrEl) emailErrEl.classList.remove('visible');
+    }
     return !hasError;
   }
-
   // ─── 送信処理 ─────────────────────────────────
 function handleSubmit() {
     const consent = document.getElementById('pp-consent');
@@ -957,6 +962,8 @@ const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_referen
     }
 
     const payload = { uid: uid, news_consent: document.getElementById('news-consent').checked };
+    payload.user_email = document.getElementById('user_email').value.trim();
+
     FIELDS.forEach(f => {
       const el = document.getElementById(f.id);
       if (el) payload[f.id] = el.value.replace(/\r\n/g, '\\n').replace(/\r/g, '\\n').replace(/\n/g, '\\n');
@@ -999,10 +1006,8 @@ const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_referen
       });
     });
 
-    // ファイル選択表示
     // ─── 編集モード判定 ────────────────────────────
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('mode') === 'edit') {
+    const params = new URLSearchParams(window.location.search);    if (params.get('mode') === 'edit') {
       // タイトル・見出し・ボタン文言を変更
       document.getElementById('page-title').textContent = '回答を修正する | 北陽テック';
       document.getElementById('intro-heading').innerHTML = '回答を修正する';
@@ -1014,18 +1019,6 @@ const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_referen
       notice.style.cssText = 'background:#e8edf8;border:1px solid #c2c8dc;border-radius:4px;padding:1rem 1.25rem;font-size:13px;color:#2d52a8;line-height:1.8;margin-bottom:2rem;';
       notice.textContent = '修正した内容は、決済後の全みせ分析に反映されます。チラ見せの再生成はありません。修正は任意です。';
       document.querySelector('.intro').after(notice);
-    }
-
-    // ファイル選択表示
-    const resumeInput = document.getElementById('resume');
-    const selectedMsg = document.getElementById('file-selected-msg');
-    if (resumeInput) {
-      resumeInput.addEventListener('change', () => {
-        if (resumeInput.files.length > 0) {
-          selectedMsg.textContent = '✓ ' + resumeInput.files[0].name;
-          selectedMsg.style.display = 'block';
-        }
-      });
     }
   });
 </script>
