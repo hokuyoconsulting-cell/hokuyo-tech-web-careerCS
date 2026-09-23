@@ -130,9 +130,9 @@
     const numbers = ['①','②','③','④','⑤','⑥'];
     let html = '';
 
-    for (let i = 0; i < Math.min(h2s.length, 6); i++) {
-      const headline = h2s[i].textContent;
-      const body = ps[i] ? ps[i].textContent : '';
+    for (let i = 0; i < 6; i++) {
+       const headline = h2s[i] ? h2s[i].textContent : 'この項目は自己分析レポートで解除されます';
+       const body = (h2s[i] && ps[i]) ? ps[i].textContent : 'あなたの回答から見えてきた強みと、その伝え方についての分析がここに続きます。面接で使える言葉として整理しています。';
       const isOpen = i < 2;
 
       if (isOpen) {
@@ -166,23 +166,16 @@
   }
 
   if (uid) {
-    const apiUrl = 'https://api.github.com/repos/hokuyoconsulting-cell/hokuyo-tech-web-careerCS/contents/results/' + uid + '.json';
-    fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github+json' } })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (!data.content) {
-          itemsList.innerHTML = '<p style="color:red">データが見つかりませんでした。</p>';
-          return;
-        }
-        const base64 = data.content.replace(/\n/g, '');
-        const binary = atob(base64);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) {
-          bytes[i] = binary.charCodeAt(i);
-        }
-        const decoded = new TextDecoder('utf-8').decode(bytes);
-        renderItems(decoded);
-      })
+    const viewUrl = 'https://hook.eu1.make.com/pf9uckvoosre4v9gi77h2dp25uzyo4ne?type=A&uid=' + encodeURIComponent(uid);
+     fetch(viewUrl)
+       .then(function(res) { return res.text(); })
+       .then(function(text) {
+         if (!text || text === 'Accepted') {
+           itemsList.innerHTML = '<p style="color:red">データが見つかりませんでした。</p>';
+           return;
+         }
+         renderItems(text);
+       })
       .catch(function() {
         itemsList.innerHTML = '<p style="color:red">データの取得に失敗しました。</p>';
       });
