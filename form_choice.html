@@ -567,6 +567,16 @@ document.querySelectorAll('.rank-row select').forEach(sel => {
     return params.get(name) || '';
   }
 
+  // B診断のuidを作る（推測されにくいランダムな文字列。必ず B_ で始める）
+  function makeBUid() {
+    if (window.crypto && crypto.randomUUID) {
+      return 'B_' + crypto.randomUUID();
+    }
+    return 'B_' + Date.now().toString(36) +
+      Math.random().toString(36).slice(2) +
+      Math.random().toString(36).slice(2);
+  }
+
   function isQ10Valid() {
     const vals = ['q10_r1','q10_r2','q10_r3','q10_r4'].map(n => form[n].value);
     if (vals.some(v => v === '')) return false;
@@ -604,7 +614,8 @@ document.querySelectorAll('.rank-row select').forEach(sel => {
     e.preventDefault();
     if (submitBtn.disabled) return;
 
-    const uid = getUrlParam('uid') || 'TEST_UID_' + Date.now();
+    const urlUid = getUrlParam('uid');
+    const uid = urlUid.startsWith('B_') ? urlUid : makeBUid();
 
     const answers = {
       q1: form.q1.value,
