@@ -148,7 +148,14 @@
     const impression = safeParse(raw.impression);
     const topDiscovery = safeParse(raw.top_discovery);
     const environmentCriteria = safeParse(raw.environment_criteria);
-    const communication = safeParse(raw.communication);
+       const communication = safeParse(raw.communication);
+
+    // ③④が届いていない＝未払い → 緑の帯を消す
+    const isPaid = !!(environmentCriteria || communication);
+    if (!isPaid) {
+      const banner = document.querySelector('.unlocked-banner');
+      if (banner) banner.style.display = 'none';
+    }
 
     if (impression) {
       html += card('①', '面接官の視点', impression.headline, impression.body, false);
@@ -173,29 +180,28 @@
       extra.forEach(function(d) {
         html += card('＋', '追加の発見', d.headline, d.body, false);
       });
-    } else {
+        } else if (isPaid) {
       html += card('＋', '追加の発見', '今回の回答から', '今回の回答からは、意外な一面として大きく見直すポイントは確認できませんでした。', true);
+    }
+
+    if (!isPaid) {
+      html += '<p style="color:#5a6180;text-align:center;padding:24px">お支払いの確認が取れていないため、①②のみ表示しています。</p>';
     }
 
     itemsList.innerHTML = html;
   }
 
   if (uid) {
-    const apiUrl = 'https://api.github.com/repos/hokuyoconsulting-cell/hokuyo-tech-web-careerCS/contents/results/' + uid + '.json';
-    fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github+json' } })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (!data.content) {
+       const viewUrl = 'https://hook.eu1.make.com/pf9uckvoosre4v9gi77h2dp25uzyo4ne?type=B&uid=' + encodeURIComponent(uid);
+    fetch(viewUrl)
+      .then(function(res) { return res.text(); })
+      .then(function(text) {
+        if (!text || text.trim() === 'Accepted') {
           itemsList.innerHTML = '<p style="color:red;text-align:center;padding:24px">データが見つかりませんでした。</p>';
           return;
         }
-        const base64 = data.content.replace(/\n/g, '');
-        const binary = atob(base64);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
-        const decoded = new TextDecoder('utf-8').decode(bytes);
         let parsed;
-        try { parsed = JSON.parse(decoded); } catch (e) {
+        try { parsed = JSON.parse(text); } catch (e) {
           itemsList.innerHTML = '<p style="color:red;text-align:center;padding:24px">データの形式が正しくありません。</p>';
           return;
         }
