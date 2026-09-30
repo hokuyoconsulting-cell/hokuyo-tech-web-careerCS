@@ -157,14 +157,12 @@
 
     html += '<div class="cta-inline"><a href="' + payUrl + '" class="btn-inline">残りの項目を解除して読む（¥3,300税込）</a></div>';
 
-    // ③ environment_criteria（有料・ロック）
-    if (environmentCriteria) {
-      html += lockedCard('③', '面接で確認すべきこと', environmentCriteria.headline, environmentCriteria.body);
-    }
-    // ④ communication（有料・ロック）
-    if (communication) {
-      html += lockedCard('④', '採用側に伝わる言葉', communication.headline, communication.body);
-    }
+       // ③④（有料・ロック）。届かないときはダミー文でぼかす
+    const DUMMY = { headline: 'この項目は自己分析レポートで解除されます', body: 'ここには、あなたの回答をもとにした分析が入っています。面接の場で役立つ視点を、具体的な言葉でまとめています。' };
+    const env = environmentCriteria || DUMMY;
+    const comm = communication || DUMMY;
+    html += lockedCard('③', '面接で確認すべきこと', env.headline, env.body);
+    html += lockedCard('④', '採用側に伝わる言葉', comm.headline, comm.body);
     // 追加の発見（有料・ロック・可変数）
     const extra = (Array.isArray(raw.additional_discoveries) ? raw.additional_discoveries : []).map(safeParse).filter(Boolean);
     extra.forEach(function(d) {
