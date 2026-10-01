@@ -894,21 +894,15 @@ function handleSubmit() {
       if (nameEl && !nameEl.value) nameEl.value = decodeURIComponent(nameParam);
     }
 
-    const isEdit = params.get('mode') === 'edit';
-    const modalTitle = document.getElementById('modal-title');
+        const modalTitle = document.getElementById('modal-title');
     const modalBody = document.getElementById('modal-body');
     const modalConfirmBtn = document.getElementById('modal-confirm-btn');
     const modalReview = document.getElementById('modal-review');
 
-    if (isEdit) {
-      modalTitle.textContent = 'この内容で決済に進みます。';
-      modalBody.textContent = '修正した内容は記録されます。よろしいですか？';
-      modalConfirmBtn.textContent = '決済に進む';
-    } else {
-      modalTitle.textContent = 'このまま送信しますか？';
-      modalBody.textContent = '具体的なエピソードがあると精度が上がります。';
-      modalConfirmBtn.textContent = 'このまま送信する';
-    }
+    modalTitle.textContent = 'このまま送信しますか？';
+    modalBody.textContent = '具体的なエピソードがあると精度が上がります。';
+    modalConfirmBtn.textContent = 'このまま送信する';
+
 
     // 入力内容をモーダルに表示
     const LABELS = {
@@ -950,15 +944,34 @@ function handleSubmit() {
     document.getElementById('confirm-modal').classList.remove('visible');
   }
 
-  function executeSubmit() {
-    const WEBHOOK_URL = 'https://hook.eu1.make.com/maja0mn37vk91sfmk197ilsdsa2xpliy';    const params = new URLSearchParams(window.location.search);
-    const uid = params.get('uid') || '';
-
-    if (params.get('mode') === 'edit' && uid) {
-const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_reference_id=' + uid;
-      window.location.href = stripeUrl;
-      return;
+    // メール経由の新しい人用のuid（A_＋ランダム）
+  function makeAUid() {
+    if (window.crypto && crypto.randomUUID) {
+      return 'A_' + crypto.randomUUID();
     }
+    return 'A_' + Date.now().toString(36) +
+      Math.random().toString(36).slice(2) +
+      Math.random().toString(36).slice(2);
+  }
+
+  function executeSubmit() {
+    const LINE_WEBHOOK_URL = 'https://hook.eu1.make.com/maja0mn37vk91sfmk197ilsdsa2xpliy'; // A_Line2
+    const MAIL_WEBHOOK_URL = 'https://hook.eu1.make.com/l3it784za5oulv2sz6hab7q66osd1zjn'; // A_mail1
+    const params = new URLSearchParams(window.location.search);
+    const isPaidEdit = params.get('mode') === 'paid_edit';
+    const isMail = params.get('via') === 'mail';
+
+    let WEBHOOK_URL = LINE_WEBHOOK_URL;
+    let uid = params.get('uid') || '';
+    if (isPaidEdit) {
+      // 修正リンク：元のuidのままA_mail1へ
+      WEBHOOK_URL = MAIL_WEBHOOK_URL;
+    } else if (isMail) {
+      // メール経由の新しい人：新しいuidを作ってA_mail1へ
+      WEBHOOK_URL = MAIL_WEBHOOK_URL;
+      uid = makeAUid();
+    }
+
 
     const payload = { uid: uid, news_consent: document.getElementById('news-consent').checked };
     payload.user_email = document.getElementById('user_email').value.trim();
@@ -969,6 +982,7 @@ const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_referen
     });
 
     const btn = document.getElementById('submit-btn');
+    const originalLabel = document.getElementById('submit-label').textContent;
     btn.disabled = true;
     document.getElementById('submit-label').textContent = '送信中...';
 
@@ -978,14 +992,15 @@ const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_referen
       body: JSON.stringify(payload)
     })
     .then(() => {
-      window.location.href = 'thanks.html';
+      window.location.href = (isPaidEdit || isMail) ? 'thanks.html?via=mail' : 'thanks.html';
     })
     .catch(() => {
       alert('送信に失敗しました。時間をおいて再度お試しください。');
       btn.disabled = false;
-      document.getElementById('submit-label').textContent = '分析を依頼する（無料）';
+      document.getElementById('submit-label').textContent = originalLabel;
     });
   }
+
   // ─── イベント登録 ─────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     loadFromStorage();
@@ -1005,18 +1020,18 @@ const stripeUrl = 'https://buy.stripe.com/fZu9AM4t36k53rrcJrd3i00?client_referen
       });
     });
 
-    // ─── 編集モード判定 ────────────────────────────
-    const params = new URLSearchParams(window.location.search);    if (params.get('mode') === 'edit') {
-      // タイトル・見出し・ボタン文言を変更
+        // ─── 修正モード（決済後の修正リンク）────────────
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('mode') === 'paid_edit') {
       document.getElementById('page-title').textContent = '回答を修正する | 北陽テック';
       document.getElementById('intro-heading').innerHTML = '回答を修正する';
-      document.getElementById('submit-label').textContent = '修正して決済に進む（¥3,300）';
-      // 自動保存バナーを非表示
-      document.querySelector('.autosave-banner').style.display = 'none';
+      document.getElementById('submit-label').textContent = '修正して分析を依頼する';
+      // 「（一部）をお見せします。決済は不要です」の案内を隠す
+      document.querySelector('.submit-note').style.display = 'none';
       // 注意書きを追加
       const notice = document.createElement('div');
       notice.style.cssText = 'background:#e8edf8;border:1px solid #c2c8dc;border-radius:4px;padding:1rem 1.25rem;font-size:13px;color:#2d52a8;line-height:1.8;margin-bottom:2rem;';
-      notice.textContent = '修正した内容は、決済後の全みせ分析に反映されます。チラ見せの再生成はありません。修正は任意です。';
+      notice.textContent = '回答の修正は1回だけです。送信すると、あらためて分析し、結果をメールでお送りします。';
       document.querySelector('.intro').after(notice);
     }
   });
