@@ -76,11 +76,11 @@
   <div class="intro">
     <div class="intro-label">ANALYSIS RESULT</div>
     <h1 class="intro-heading">あなたの経験を、<br>面接官の視点で読み解きました。</h1>
-    <p class="intro-body">あなたが当たり前だと思っている経験の中に、<br>「ぜひ会ってみたい」と感じる理由が隠れています。<br><br>まずは①②をご覧ください。<br>続きには、面接で確認すべきこと・採用側に伝わる言葉が続いています。</p>
+    <p class="intro-body">あなたが思っている自分と、回答から見えてきた自分。<br>そのズレの中に、思い込みをほどくヒントが隠れています。<br><br>まずは①②をご覧ください。<br>続きには、面接で確認すべきこと・採用側に伝わる言葉が続いています。</p>
   </div>
   <div class="items-list" id="items-list"></div>
   <div class="cta-section">
-    <div class="cta-label">自己分析レポート</div>
+    <div class="cta-label">分析結果の全文</div>
     <h2 class="cta-heading">残りの項目を解除する</h2>
     <ul class="unlock-list" id="unlock-list"></ul>
     <div class="cta-price"><span class="cta-price-amount">¥3,300</span><span class="cta-price-unit">（税込）</span></div>
@@ -99,12 +99,7 @@
 
   document.querySelectorAll('a[href="' + baseUrl + '"]').forEach(function(el) { el.href = payUrl; });
 
-  // btn-secondaryにもuidを付与
-  const editUrl = 'https://hokuyoconsulting-cell.github.io/hokuyo-tech-web-careerCS/form_v2.html?mode=edit';
-  const editUrlWithUid = uid ? editUrl + '&uid=' + uid : editUrl;
-  document.querySelectorAll('a[href="' + editUrl + '"]').forEach(function(el) {
-    el.href = editUrlWithUid;
-  });
+
 
 
   const LOCK_SVG = '<svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="#9199b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
@@ -123,7 +118,7 @@
       '<div class="item-number">' + number + ' ' + label + '</div>' +
       '<div class="item-headline">' + headline + '</div>' +
       '<div class="item-body">' + body + '</div>' +
-      '<div class="lock-overlay" aria-hidden="true">' + LOCK_SVG + '<span class="lock-text">自己分析レポートで解除</span></div>' +
+      '<div class="lock-overlay" aria-hidden="true">' + LOCK_SVG + '<span class="lock-text">全文で解除</span></div>' +
     '</div>';
   }
 
@@ -159,7 +154,7 @@
     html += '<div class="cta-inline"><a href="' + payUrl + '" class="btn-inline">残りの項目を解除して読む（¥3,300税込）</a></div>';
 
        // ③④（有料・ロック）。届かないときはダミー文でぼかす
-    const DUMMY = { headline: 'この項目は自己分析レポートで解除されます', body: 'ここには、あなたの回答をもとにした分析が入っています。面接の場で役立つ視点を、具体的な言葉でまとめています。' };
+    const DUMMY = { headline: 'この項目は、全文で解除されます', body: 'ここには、あなたの回答をもとにした分析が入っています。面接の場で役立つ視点を、具体的な言葉でまとめています。' };
     const env = environmentCriteria || DUMMY;
     const comm = communication || DUMMY;
     html += lockedCard('③', '面接で確認すべきこと', env.headline, env.body);
