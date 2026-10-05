@@ -1025,6 +1025,8 @@ function handleSubmit() {
     if (params.get('mode') === 'paid_edit') {
       document.getElementById('page-title').textContent = '回答を修正する | 北陽テック';
       document.getElementById('intro-heading').innerHTML = '回答を修正する';
+      // イントロの長い文を隠す（見出しだけ残す）
+      document.querySelectorAll('.intro p:not(.intro-label)').forEach(function(p) { p.style.display = 'none'; });
       document.getElementById('submit-label').textContent = '修正して分析を依頼する';
       // 「（一部）をお見せします。決済は不要です」の案内を隠す
       document.querySelector('.submit-note').style.display = 'none';
