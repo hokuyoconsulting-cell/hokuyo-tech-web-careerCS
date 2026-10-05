@@ -117,7 +117,12 @@
     const ps = doc.querySelectorAll('p');
 
     if (h2s.length === 0) {
-      itemsList.innerHTML = '<p style="color:red">データの読み込みに失敗しました。</p>';
+      // 分析できなかったとき：案内を出し、¥3,300ボタンを隠す
+      const retryUrl = uid.indexOf('A_') === 0 ? 'form_descriptive.html?via=mail' : 'form_descriptive.html?uid=' + encodeURIComponent(uid);
+      itemsList.innerHTML = '<p style="color:#5a6180;line-height:1.9;">回答から分析できませんでした。<br>具体的なエピソードを書いて、もう一度送信してください。</p><p style="margin-top:16px;"><a href="' + retryUrl + '" class="btn-inline">回答フォームへ</a></p>';
+      document.querySelector('.count-badge').style.display = 'none';
+      document.querySelector('.cta-section').style.display = 'none';
+      document.getElementById('sticky-cta').style.display = 'none';
       return;
     }
 
