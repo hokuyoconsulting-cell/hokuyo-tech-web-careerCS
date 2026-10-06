@@ -129,6 +129,20 @@
     return v;
   }
 
+  // 結果を表示できなかったとき：案内を出し、¥3,300ボタンを隠す
+  const RETRY_MSG = '回答から分析できませんでした。<br>もう一度、回答を送信してください。';
+  const RELOAD_MSG = '結果を読み込めませんでした。<br>時間をおいて、もう一度このページを開いてください。';
+  const URL_MSG = 'URLが正しくありません。<br>メールに記載のURLから、もう一度開いてください。';
+  function showFailed(msg, showRetry) {
+    let html = '<p style="color:#5a6180;line-height:1.9;">' + msg + '</p>';
+    if (showRetry) { html += '<p style="margin-top:16px;"><a href="form_choice.html" class="btn-inline">回答フォームへ</a></p>'; }
+    document.getElementById('items-list').innerHTML = html;
+    document.querySelector('.cta-section').style.display = 'none';
+    document.getElementById('sticky-cta').style.display = 'none';
+    document.querySelector('.intro-heading').textContent = showRetry ? '回答をもう一度お送りください' : '結果を表示できませんでした';
+    document.querySelector('.intro-body').style.display = 'none';
+  }
+
   function renderData(raw) {
     const itemsList = document.getElementById('items-list');
     const unlockList = document.getElementById('unlock-list');
@@ -138,6 +152,9 @@
     const topDiscovery = safeParse(raw.top_discovery);
     const environmentCriteria = safeParse(raw.environment_criteria);
     const communication = safeParse(raw.communication);
+
+    // ①が届かないとき（分析できなかったとき）
+    if (!impression) { showFailed(RETRY_MSG, true); return; }
 
     // ① impression（無料）
     if (impression) {
@@ -184,18 +201,18 @@
       .then(function(res) { return res.text(); })
       .then(function(text) {
         if (!text || text.trim() === 'Accepted') {
-          document.getElementById('items-list').innerHTML = '<p style="color:red">データが見つかりませんでした。</p>';
+showFailed(RETRY_MSG, true);
           return;
         }
         let parsed;
         try { parsed = JSON.parse(text); } catch (e) {
-          document.getElementById('items-list').innerHTML = '<p style="color:red">データの形式が正しくありません。</p>';
+showFailed(RETRY_MSG, true);
           return;
         }
         renderData(parsed);
       })
       .catch(function() {
-        document.getElementById('items-list').innerHTML = '<p style="color:red">データの取得に失敗しました。</p>';
+showFailed(RELOAD_MSG, false);
       });
   }
 
@@ -216,7 +233,7 @@
     window.addEventListener('scroll', onScroll);
   }
 
-  if (!uid) { initScroll(); }
+  if (!uid) { showFailed(URL_MSG, false); }
 </script>
 </body>
 </html>
