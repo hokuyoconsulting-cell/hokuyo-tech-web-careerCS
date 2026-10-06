@@ -109,6 +109,22 @@
   // GitHub JSONからデータを取得して表示
   const itemsList = document.querySelector('.items-list');
 
+  // 結果を表示できなかったとき：案内を出し、¥3,300ボタンを隠す
+  const RETRY_MSG = '回答から分析できませんでした。<br>具体的なエピソードを書いて、もう一度送信してください。';
+  const RELOAD_MSG = '結果を読み込めませんでした。<br>時間をおいて、もう一度このページを開いてください。';
+  const URL_MSG = 'URLが正しくありません。<br>メールまたはLINEに記載のURLから、もう一度開いてください。';
+  function showFailed(msg, showRetry) {
+    const retryUrl = uid.indexOf('A_') === 0 ? 'form_descriptive.html?via=mail' : 'form_descriptive.html?uid=' + encodeURIComponent(uid);
+    let html = '<p style="color:#5a6180;line-height:1.9;">' + msg + '</p>';
+    if (showRetry) { html += '<p style="margin-top:16px;"><a href="' + retryUrl + '" class="btn-inline">回答フォームへ</a></p>'; }
+    itemsList.innerHTML = html;
+    document.querySelector('.count-badge').style.display = 'none';
+    document.querySelector('.cta-section').style.display = 'none';
+    document.getElementById('sticky-cta').style.display = 'none';
+    document.querySelector('.intro-heading').textContent = showRetry ? '回答をもう一度お送りください' : '結果を表示できませんでした';
+    document.querySelector('.intro-body').style.display = 'none';
+  }
+
   function renderItems(htmlText) {
     // h2とpのペアを10個抽出
     const parser = new DOMParser();
@@ -117,14 +133,7 @@
     const ps = doc.querySelectorAll('p');
 
     if (h2s.length === 0) {
-      // 分析できなかったとき：案内を出し、¥3,300ボタンを隠す
-      const retryUrl = uid.indexOf('A_') === 0 ? 'form_descriptive.html?via=mail' : 'form_descriptive.html?uid=' + encodeURIComponent(uid);
-      itemsList.innerHTML = '<p style="color:#5a6180;line-height:1.9;">回答から分析できませんでした。<br>具体的なエピソードを書いて、もう一度送信してください。</p><p style="margin-top:16px;"><a href="' + retryUrl + '" class="btn-inline">回答フォームへ</a></p>';
-      document.querySelector('.count-badge').style.display = 'none';
-      document.querySelector('.cta-section').style.display = 'none';
-      document.getElementById('sticky-cta').style.display = 'none';
-      document.querySelector('.intro-heading').textContent = '回答をもう一度お送りください';
-      document.querySelector('.intro-body').style.display = 'none';
+      showFailed(RETRY_MSG, true);
       return;
     }
 
@@ -171,14 +180,14 @@
      fetch(viewUrl)
        .then(function(res) { return res.text(); })
        .then(function(text) {
-         if (!text || text === 'Accepted') {
-           itemsList.innerHTML = '<p style="color:red">データが見つかりませんでした。</p>';
+if (!text || text.trim() === 'Accepted') {
+           showFailed(RETRY_MSG, true);
            return;
          }
          renderItems(text);
        })
       .catch(function() {
-        itemsList.innerHTML = '<p style="color:red">データの取得に失敗しました。</p>';
+        showFailed(RELOAD_MSG, false);
       });
   }
 
@@ -199,7 +208,7 @@
     window.addEventListener('scroll', onScroll);
   }
 
-  if (!uid) { initScroll(); }
+  if (!uid) { showFailed(URL_MSG, false); }
 </script>
 </body>
 </html>
