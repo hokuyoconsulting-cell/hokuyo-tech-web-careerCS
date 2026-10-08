@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>書類の提出｜面接官の目線 個別相談</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18;
+    --sub: #5a6180;
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --line: #d9d6cc;
+    --accent: #2f7d5b;
+    --err: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.8;
+  }
+  .logo {
+    padding: 1.2rem 1.5rem;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .logo span { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; color: var(--sub); margin-left: 0.6rem; }
+  main { max-width: 640px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
+  .label { font-size: 12px; color: var(--accent); letter-spacing: 0.1em; margin: 0; }
+  h1 { font-family: 'Noto Serif JP', serif; font-weight: 500; font-size: 26px; margin: 0.2rem 0 1.5rem; }
+  .lead { font-size: 15px; margin: 0 0 1rem; }
+  .no { font-size: 14px; color: var(--sub); margin: 0 0 1.5rem; }
+  .notice {
+    background: #e8edf8; border: 1px solid #c2c8dc; color: #2d52a8;
+    border-radius: 6px; padding: 1rem 1.2rem; font-size: 14px; margin-bottom: 1.8rem;
+  }
+  .notice p { margin: 0; }
+  .field {
+    display: block; background: var(--card); border: 1px solid var(--line);
+    border-radius: 6px; padding: 1.1rem 1.2rem; margin-bottom: 1rem;
+  }
+  .field-title { display: block; font-weight: 500; font-size: 15px; margin-bottom: 0.5rem; }
+  .field input { font-size: 14px; width: 100%; }
+  .hint { font-size: 13px; color: var(--sub); margin: 0.5rem 0 1.5rem; }
+  button {
+    display: block; width: 100%; padding: 1rem; border: none; border-radius: 4px;
+    background: var(--accent); color: #fff; font-size: 15px; font-family: inherit; cursor: pointer;
+  }
+  button:disabled { background: #b7c4bd; cursor: not-allowed; }
+  .error { color: var(--err); font-size: 14px; min-height: 1.5em; margin: 0.8rem 0 0; }
+  .privacy { font-size: 13px; color: var(--sub); margin-top: 1.5rem; }
+  .message { font-size: 15px; }
+  footer { text-align: center; font-size: 12px; color: var(--sub); padding: 2rem 1rem; border-top: 1px solid var(--line); }
+  footer a { color: var(--sub); }
+</style>
+</head>
+<body>
+
+<header class="logo">面接官の目線<span>北陽テック / Hokuyo Tech</span></header>
+
+<main>
+  <p class="label">個別相談</p>
+  <h1>書類の提出</h1>
+
+  <!-- 提出フォーム -->
+  <div id="form-area" hidden>
+    <p class="lead">履歴書と職務経歴書を、それぞれの欄から選んで送信してください。</p>
+    <p class="no">受付番号：<span id="no-text"></span></p>
+
+    <div class="notice">
+      <p>氏名・電話番号は、記載していただいたままでも、消していただくか記載せずにお送りいただいても構いません。</p>
+      <p>生年月日と、市町村までのご住所は、必ず記載してください。</p>
+    </div>
+
+    <label class="field">
+      <span class="field-title">履歴書</span>
+      <input type="file" id="rirekisho" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+    </label>
+
+    <label class="field">
+      <span class="field-title">職務経歴書</span>
+      <input type="file" id="shokumu" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
+    </label>
+
+    <p class="hint">PDF・Word・Excel・画像（JPG・PNG）のファイルを送れます。2つ合わせて5MBまでです。</p>
+
+    <button id="submit-btn" disabled>2つの書類を送信する</button>
+    <p id="error" class="error"></p>
+
+    <p class="privacy">いただいた書類は面談の準備のためだけに使い、公開しない場所に保管します。</p>
+  </div>
+
+  <!-- 送信できたとき -->
+  <div id="done-area" hidden>
+    <p class="message">書類を受け取りました。ありがとうございます。<br>
+    確認のメールをお送りします。<br><br>
+    書類と2つの診断がそろいましたら、面談の予約URLをメールでお送りします。</p>
+  </div>
+
+  <!-- URLが正しくないとき -->
+  <div id="bad-url" hidden>
+    <p class="message">URLが正しくありません。<br>
+    「【書類提出】受付番号…」のメールに記載のURLから、もう一度開いてください。</p>
+  </div>
+</main>
+
+<footer>
+  北陽テック（Hokuyo Tech）　<a href="privacy.html">プライバシーポリシー</a>
+</footer>
+
+<script>
+  const WEBHOOK_URL = 'https://hook.eu1.make.com/pqr79j6klwfv0zksrsa7vqemmcqu6hat'; // doc_submit
+  const MAX_TOTAL_MB = 5;
+
+  const params = new URLSearchParams(window.location.search);
+  const no = (params.get('no') || '').trim();
+  const isValidNo = /^\d{6}-[A-Za-z0-9]{6}$/.test(no);
+
+  const formArea = document.getElementById('form-area');
+  const doneArea = document.getElementById('done-area');
+  const badUrl = document.getElementById('bad-url');
+  const rirekisho = document.getElementById('rirekisho');
+  const shokumu = document.getElementById('shokumu');
+  const btn = document.getElementById('submit-btn');
+  const errorText = document.getElementById('error');
+
+  if (isValidNo) {
+    document.getElementById('no-text').textContent = no;
+    formArea.hidden = false;
+  } else {
+    badUrl.hidden = false;
+  }
+
+  // 2つの欄が埋まったら送信ボタンを押せるようにする
+  function updateButton() {
+    errorText.textContent = '';
+    btn.disabled = !(rirekisho.files.length === 1 && shokumu.files.length === 1);
+  }
+  rirekisho.addEventListener('change', updateButton);
+  shokumu.addEventListener('change', updateButton);
+
+  btn.addEventListener('click', function () {
+    const f1 = rirekisho.files[0];
+    const f2 = shokumu.files[0];
+    if (!f1 || !f2) return;
+
+    const totalMb = (f1.size + f2.size) / 1024 / 1024;
+    if (totalMb > MAX_TOTAL_MB) {
+      errorText.textContent = '2つのファイルの合計が' + MAX_TOTAL_MB + 'MBを超えています。ファイルを小さくして、もう一度お送りください。';
+      return;
+    }
+
+    const data = new FormData();
+    data.append('uketsuke_no', no);
+    data.append('rirekisho', f1, f1.name);
+    data.append('shokumu', f2, f2.name);
+
+    btn.disabled = true;
+    btn.textContent = '送信しています…';
+
+    fetch(WEBHOOK_URL, { method: 'POST', body: data })
+      .then(function (res) {
+        if (!res.ok) throw new Error('status ' + res.status);
+        formArea.hidden = true;
+        doneArea.hidden = false;
+        window.scrollTo(0, 0);
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = '2つの書類を送信する';
+        errorText.textContent = '送信できませんでした。時間をおいて、もう一度お試しください。';
+      });
+  });
+</script>
+
+</body>
+</html>
