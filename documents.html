@@ -88,7 +88,7 @@
       <input type="file" id="shokumu" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
     </label>
 
-    <p class="hint">PDF・Word・Excel・画像（JPG・PNG）のファイルを送れます。2つ合わせて5MBまでです。</p>
+    <p class="hint">PDF・Word・Excel・画像（JPG・PNG）のファイルを送れます。2つ合わせて4MBまでです。</p>
 
     <button id="submit-btn" disabled>2つの書類を送信する</button>
     <p id="error" class="error"></p>
@@ -116,7 +116,7 @@
 
 <script>
   const WEBHOOK_URL = 'https://hook.eu1.make.com/pqr79j6klwfv0zksrsa7vqemmcqu6hat'; // doc_submit
-  const MAX_TOTAL_MB = 5;
+  const MAX_TOTAL_MB = 4;
 
   const params = new URLSearchParams(window.location.search);
   const no = (params.get('no') || '').trim();
