@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個別相談｜面接官の目線</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="面接官の目線の個別相談。書類と診断結果を読み解き、これからの仕事との向き合い方を一緒に考える伴走型コンサルティングです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F7F5F0;
+    --paper-dark: #EEEBE4;
+    --ink: #292929;
+    --ink-light: #5a5a56;
+    --ink-muted: #8a8a84;
+    --accent: #536B5B;
+    --accent-dark: #435849;
+    --border: #d8d4cc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.9;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+  h1, h2, h3, .serif { font-family: 'Noto Serif JP', serif; font-weight: 500; }
+
+  /* ロゴ（ほかのページと同じ形） */
+  header { border-bottom: 1px solid var(--border); }
+  header .wrap { padding-top: 1rem; padding-bottom: 1rem; }
+  .logo { font-family: 'Noto Serif JP', serif; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .logo span { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; color: var(--ink-muted); margin-left: 0.6rem; }
+
+  /* 一番上 */
+  .hero { padding: 4.5rem 0 3.5rem; text-align: center; }
+  .label { font-size: 12px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 1.5rem; }
+  .hero h1 { font-size: clamp(22px, 5vw, 30px); line-height: 1.7; margin-bottom: 1.5rem; }
+  .hero p { color: var(--ink-light); font-size: 14px; }
+
+  section { padding: 3.5rem 0; border-top: 1px solid var(--border); }
+  .sec-label { font-size: 11px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 0.5rem; }
+  section h2 { font-size: 22px; margin-bottom: 2rem; }
+
+  /* 経歴 */
+  .profile-head { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2.5rem; }
+  .initial {
+    width: 84px; height: 84px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--accent); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif JP', serif; font-size: 32px;
+  }
+  .profile-name { font-family: 'Noto Serif JP', serif; font-size: 20px; }
+  .profile-role { font-size: 13px; color: var(--ink-muted); }
+  .career { list-style: none; }
+  .career li { padding: 1.5rem 0; border-top: 1px solid var(--border); }
+  .career li:last-child { border-bottom: 1px solid var(--border); }
+  .career .num { font-family: 'Noto Serif JP', serif; color: var(--accent); font-size: 13px; }
+  .career h3 { font-size: 17px; margin: 0.2rem 0 0.4rem; }
+  .career p { color: var(--ink-light); font-size: 14px; }
+
+  /* 三原則 */
+  .rules { display: grid; gap: 1rem; }
+  .rule { background: #fff; border: 1px solid var(--border); padding: 1.25rem 1.5rem; }
+  .rule h3 { font-size: 17px; }
+  .rule .tag { font-size: 12px; color: var(--accent); margin-top: 0.1rem; }
+  .rule p { color: var(--ink-light); font-size: 14px; margin-top: 0.3rem; }
+
+  /* 提供する価値 */
+  .values { list-style: none; display: grid; gap: 1.5rem; }
+  .values h3 { font-size: 17px; margin-bottom: 0.3rem; }
+  .values p { color: var(--ink-light); font-size: 14px; }
+  .lead { color: var(--ink-light); font-size: 14px; margin: -1.25rem 0 2rem; }
+  .values li { padding-left: 1.2rem; position: relative; }
+  .values li::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* 流れ */
+  .steps { list-style: none; }
+  .steps li { display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.5rem; padding-bottom: 1.75rem; }
+  .steps .n { font-family: 'Noto Serif JP', serif; font-size: 22px; color: var(--accent); line-height: 1.4; }
+  .steps h3 { font-size: 17px; margin-bottom: 0.3rem; }
+  .steps p { color: var(--ink-light); font-size: 14px; }
+
+  /* 料金と申し込み */
+  .price-box { background: #fff; border: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; }
+  .price-name { font-size: 14px; color: var(--ink-light); }
+  .price { font-family: 'Noto Serif JP', serif; font-size: 34px; margin: 0.3rem 0; }
+  .price small { font-size: 14px; margin-left: 0.2rem; }
+  .price-note { font-size: 13px; color: var(--ink-light); }
+  .btn {
+    display: block; width: 100%; max-width: 360px; margin: 1.75rem auto 1rem;
+    padding: 1rem; background: var(--accent); color: #fff; text-decoration: none;
+    border-radius: 4px; font-size: 15px; border: none; cursor: pointer;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .btn.disabled { background: var(--ink-muted); cursor: not-allowed; }
+  .doc-note { font-size: 13px; color: var(--ink-light); text-align: left; max-width: 420px; margin: 0 auto; }
+
+  /* 運営者・フッター */
+  .info { font-size: 13px; color: var(--ink-light); }
+  .info dt { color: var(--ink-muted); margin-top: 0.8rem; }
+  footer { border-top: 1px solid var(--border); padding: 2rem 0 3rem; font-size: 12px; color: var(--ink-muted); text-align: center; }
+  footer a { color: var(--ink-muted); margin: 0 0.5rem; }
+
+  /* 未確定の所（公開前に消す） */
+  .tbd { background: #fff3b0; padding: 0 0.2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="index.html">面接官の目線<span>北陽テック / Hokuyo Tech</span></a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">個別相談</p>
+    <h1>あなたの歩んできた道のりには、<br>まだあなたも気づいていない<br>価値がある。</h1>
+    <p>経験を言葉に変え、未来を切り拓く<br>伴走型コンサルティング</p>
+  </div>
+
+  <section>
+    <p class="sec-label">PROFILE</p>
+    <h2>相談を担当する人</h2>
+    <p class="lead">「選ぶ側」の本音を知り、自らも「一歩踏み出す不安」を乗り越えてきたパートナー</p>
+    <div class="profile-head">
+      <div class="initial"></div>
+      <div>
+        <p class="profile-name">活動名</p>
+        <p class="profile-role">相談・戦略担当</p>
+      </div>
+    </div>
+    <ul class="career">
+      <li>
+        <span class="num">01</span>
+        <h3>等身大の挑戦</h3>
+        <p>決して最初からすべてが順調だったわけではありません。自分自身の市場価値に悩み、どうすれば想いが伝わるのかを試行錯誤しながら、外資系企業への道を自ら切り拓いてきた経験を持っています。</p>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <h3>20年の対話実績</h3>
+        <p>人事・面接官として600名以上の方々と向き合ってきました。単なる「選別」ではなく、「その人の良さはどこにあるのか」を探し続けてきた20年間です。どうすればあなたの魅力が相手に届くのか、実体験に基づいた視点でお伝えします。</p>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <h3>現場に寄り添う</h3>
+        <p>販売・営業の分野で全国上位として表彰された実績もあります。それは、相手の言葉に耳を傾け、本質的な困りごとを捉えることに徹してきた結果です。一歩ずつ地道に努力を重ねる方の気持ちに寄り添い、一番納得できる形を一緒に考えます。</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="sec-label">PRINCIPLES</p>
+    <h2>私たちが大切にしていること</h2>
+    <p class="lead">私たちは、一般的な「就職・転職支援」とは一線を画す、本質的な対話を重視しています。</p>
+    <div class="rules">
+      <div class="rule">
+        <h3>あなたの言葉で語れるように</h3>
+        <p class="tag">添削はしません</p>
+        <p>懸命に働いてきた日々を、次の場所で正当に評価される「大切な言葉」にできるよう、対話を通じて一緒に考えます。</p>
+      </div>
+      <div class="rule">
+        <h3>あなたの側に立って</h3>
+        <p class="tag">求人の紹介はしません</p>
+        <p>利害関係のない第三者の立場から、純粋に「あなたにとっての最適」を共に考えます。</p>
+      </div>
+      <div class="rule">
+        <h3>あなたらしい伝え方を</h3>
+        <p class="tag">マナーの型は教えません</p>
+        <p>借り物の言葉や作法ではなく、あなた自身の価値に根ざした伝え方に気づけるよう、お手伝いします。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="sec-label">VALUE</p>
+    <h2>私たちが提供する価値</h2>
+    <ul class="values">
+      <li><h3>「自分だけの答え」に気づく対話</h3><p>どんなに素晴らしい経験も、自分でその価値を認識できていなければ、相手に届けられません。答えを教えるのではなく、丁寧な対話を通じて、あなた自身が「自分の強み」を再発見し、自らの言葉で語れるようになることを大切にします。</p></li>
+      <li><h3>あたりまえの中にある価値</h3><p>自分では「当たり前」だと思っている仕事の中にこそ、実は宝物が眠っています。対話の中で、あなた自身がそれに気づけるようにお手伝いします。</p></li>
+      <li><h3>自分らしく働くための土台作り</h3><p>自分にとっては普通でも、ほかの人には難しいこと。それに気づくと、無理に自分を変えなくても、生きやすく、動きやすくなります。焦って答えを出す必要はありません。あなた自身が気づけるまで、対話を重ねます。</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="sec-label">FLOW</p>
+    <h2>相談までの流れ</h2>
+    <ol class="steps">
+      <li>
+        <span class="n">1</span>
+        <div>
+          <h3>無料診断（LINEまたはメール）</h3>
+          <p>まずは「当たり前の中にある強みを探す診断」または「思い込みをほどく診断」で、ご自身の価値を再確認するきっかけを作ってみてください。</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <div>
+          <h3>分析結果を受け取る</h3>
+          <p>面接官の目線で読み解いた結果の一部を、無料でお届けします。全文は3,300円でご覧いただけます。</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <div>
+          <h3>個別相談（10,000円）で、丁寧な対話と診立て</h3>
+          <p>個別相談にお申し込みいただくと、まず履歴書・職務経歴書をご提出いただきます。書類と診断結果を一行ずつ読み解いたうえで、面談での対話を通じて、これからの仕事との向き合い方に、あなた自身が気づけるようにお手伝いします。まだ受けていない診断があれば、あわせてご案内します。</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <p class="sec-label">PRICE</p>
+    <h2>料金とお申し込み</h2>
+    <div class="price-box">
+      <p class="price-name">転職・就職 個別相談（Zoom・60分）</p>
+      <p class="price">10,000円<small>（税込）</small></p>
+      <p class="price-note">面談1回ごとの料金です。<br>続けて話したいときは、何度でもお申し込みいただけます。</p>
+      <!-- 公開するときは下の span を消し、a を有効にする
+      <a class="btn" href="https://buy.stripe.com/6oU28k3oZaAl1jj6l3d3i01">個別相談に申し込む</a>
+      -->
+      <span class="btn disabled">現在準備中です</span>
+      <p class="doc-note">お支払いのあと、履歴書・職務経歴書のご提出をお願いします（2回目以降は、前回の書類をそのまま使えます。新しい書類に出し直すこともできます）。</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="sec-label">ABOUT</p>
+    <h2>運営者情報</h2>
+    <dl class="info">
+      <dt>運営者</dt><dd>北陽テック（Hokuyo Tech）</dd>
+      <dt>サービス名</dt><dd>面接官の目線</dd>
+      <dt>サービス内容</dt><dd>自身の価値を言葉にするためのお手伝い、およびこれからの仕事の向き合い方を考える対話</dd>
+      <dt>お問い合わせ</dt><dd>hokuyo.consulting@gmail.com</dd>
+    </dl>
+  </section>
+
+</div>
+
+<footer>
+  <div>北陽テック（Hokuyo Tech）</div>
+  <div style="margin-top:0.5rem;">
+    <a href="tokushoho.html">特定商取引法に基づく表記</a>
+    <a href="privacy.html">プライバシーポリシー</a>
+    <a href="terms.html">利用規約</a>
+  </div>
+</footer>
+
+</body>
+</html>
